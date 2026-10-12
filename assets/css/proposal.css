@@ -1,0 +1,326 @@
+/*
+ * MW Showband — proposal page layout system, scoped under .mwsb-prop.
+ * Its --mwsb-prop-* variables resolve to the main site's own tokens.css
+ * palette (client wants the proposal page to match the rest of the site,
+ * not a separate colour scheme) — only the names stayed the same, kept so
+ * every rule below can reference one without duplicating tokens.css here.
+ * Every proposal widget wraps its <section> in both the normal
+ * .mwsb-widget .mwsb-section (for the shared container/gutter layout
+ * primitives) and .mwsb-prop (for these variables).
+ * Author: Aqib Dev
+ */
+
+.mwsb-prop {
+	--mwsb-prop-surface-base: var(--mwsb-surface-base);
+	--mwsb-prop-surface-elevated: var(--mwsb-surface-elevated);
+	--mwsb-prop-surface-highlight: var(--mwsb-surface-highlight);
+	--mwsb-prop-surface-accent: var(--mwsb-surface-accent);
+	--mwsb-prop-surface-container-low: var(--mwsb-surface-container-low);
+	--mwsb-prop-surface-container-lowest: var(--mwsb-surface-container-lowest);
+	--mwsb-prop-surface-container-high: var(--mwsb-surface-accent);
+
+	--mwsb-prop-primary: var(--mwsb-primary);
+	--mwsb-prop-primary-bright: var(--mwsb-accent-purple);
+
+	--mwsb-prop-on-primary: var(--mwsb-text-white);
+	--mwsb-prop-secondary: var(--mwsb-secondary);
+	--mwsb-prop-secondary-container: var(--mwsb-secondary-container);
+	--mwsb-prop-tertiary: var(--mwsb-tertiary);
+	--mwsb-prop-stage-gold: var(--mwsb-stage-gold);
+
+	--mwsb-prop-text-white: var(--mwsb-text-white);
+	--mwsb-prop-text-muted: var(--mwsb-text-muted);
+	--mwsb-prop-border-hairline: var(--mwsb-border-hairline);
+
+	--mwsb-prop-font-display: var(--mwsb-font-display);
+	--mwsb-prop-font-body: var(--mwsb-font-body);
+
+	color: var(--mwsb-prop-text-white);
+	font-family: var(--mwsb-prop-font-body);
+}
+
+/* tokens.css caps .mwsb-container at 1140px, which pinned proposal content narrower than the
+   header/footer whenever the wrapping Elementor Container is wider (e.g. Boxed 1600px). Here the
+   wrapping Container's own width is the single source of truth; .mwsb-container keeps only its gutter. */
+.mwsb-prop .mwsb-container { max-width: none; }
+
+.mwsb-prop a { text-decoration: none; }
+/* This page is built by direct DB insert (inc/class-proposal-page-builder.php), not saved
+   through the Elementor editor, so Elementor never registers the FA icon-font asset for it —
+   icons fall back to Elementor's inline-SVG rendering, which font-size alone can't size.
+   The svg rule below is what actually keeps every one of these icons small. */
+/* Elementor puts the class passed to Icons_Manager::render_icon() on the <svg> ITSELF (not a wrapper),
+   so `fill: currentColor` has to be set on .mwsb-prop-icon directly — without it the SVG falls back to the
+   default black fill and ignores every `color` rule below (the icons looked black on the dark cards).
+   The `svg` descendant rule still covers the font-icon <i> variant, which wraps its own <svg>. */
+.mwsb-prop-icon { display: inline-flex; align-items: center; justify-content: center; line-height: 1; width: 1em; height: 1em; flex: none; fill: currentColor; }
+.mwsb-prop-icon svg { width: 1em; height: 1em; fill: currentColor; }
+.mwsb-prop ul { margin: 0; padding: 0; list-style: none; }
+
+.mwsb-prop-eyebrow {
+	display: block;
+	font-family: var(--mwsb-prop-font-display);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--mwsb-prop-primary-bright);
+	margin: 0 0 var(--mwsb-space-xs);
+}
+
+/* Wider tracking for the hero eyebrow — a class (not an inline style) so Elementor's Letter Spacing control can override it. */
+.mwsb-prop-eyebrow--wide { letter-spacing: 0.25em; }
+
+.mwsb-prop-heading {
+	font-family: var(--mwsb-prop-font-display);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: -0.02em;
+	line-height: 1.17;
+	color: var(--mwsb-prop-text-white);
+	margin: 0;
+}
+
+.mwsb-prop-heading--xl { font-size: clamp(28px, 2.5vw, 48px); line-height: 1.17; }
+.mwsb-prop-heading--hero { font-weight: 700; letter-spacing: -0.03em; font-size: clamp(36px, 5vw, 72px); line-height: 1.11; }
+
+.mwsb-prop-gradient-text {
+	background: linear-gradient(90deg, var(--mwsb-prop-primary), var(--mwsb-prop-secondary), var(--mwsb-prop-tertiary));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+}
+
+.mwsb-prop-desc { font-size: 18px; line-height: 1.56; color: var(--mwsb-prop-text-muted); margin: var(--mwsb-space-sm) 0 0; max-width: 640px; }
+
+.mwsb-prop-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--mwsb-space-sm);
+	/* Size, corners and type come from the ONE button standard in tokens.css, so these buttons
+	   are identical to the header / hero / card buttons on every other page (they used to be
+	   rounded 12px with different padding and tracking). */
+	min-height: var(--mwsb-btn-height);
+	max-width: 100%;
+	padding: 10px var(--mwsb-btn-padding-x);
+	border-radius: var(--mwsb-btn-radius);
+	border: none;
+	cursor: pointer;
+	font-family: var(--mwsb-prop-font-display);
+	font-size: var(--mwsb-btn-font-size);
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: var(--mwsb-btn-letter-spacing);
+	text-align: center;
+	text-transform: uppercase;
+	transition: all 0.3s ease;
+}
+
+/* Same gradient + glow as the site's .mwsb-btn--primary / --ghost (tokens.css). */
+.mwsb-prop-btn--primary {
+	background: linear-gradient(90deg, var(--mwsb-secondary), var(--mwsb-tertiary));
+	color: var(--mwsb-prop-text-white);
+	box-shadow: 0 0 24px rgba(231, 31, 133, 0.35), 0 0 24px rgba(240, 130, 26, 0.25);
+}
+.mwsb-prop-btn--primary:hover { background: linear-gradient(90deg, var(--mwsb-tertiary), var(--mwsb-secondary)); box-shadow: 0 0 32px rgba(240, 130, 26, 0.45), 0 0 32px rgba(231, 31, 133, 0.3); color: var(--mwsb-prop-text-white); }
+.mwsb-prop-btn--primary.is-selected { background: var(--mwsb-prop-surface-accent); box-shadow: none; }
+
+.mwsb-prop-btn--ghost {
+	background: rgba(47, 34, 87, 0.7);
+	backdrop-filter: blur(8px);
+	color: var(--mwsb-prop-text-white);
+}
+.mwsb-prop-btn--ghost:hover { background: var(--mwsb-prop-surface-highlight); color: var(--mwsb-prop-tertiary); }
+
+.mwsb-prop-btn--block { width: 100%; }
+
+/* ---------------------------------------------------------------------
+ * Hero
+ * ------------------------------------------------------------------ */
+.mwsb-prop-hero { position: relative; overflow: hidden; background: var(--mwsb-prop-surface-base); padding-top: 24px; }
+.mwsb-prop-hero__bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.3; filter: grayscale(1); }
+.mwsb-prop-hero__scrim { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to bottom, rgba(9, 9, 27, 0.8), rgba(9, 9, 27, 0.7), #09091b); }
+.mwsb-prop-hero__glow-a { position: absolute; top: -120px; right: 20%; width: 380px; height: 380px; border-radius: 50%; background: rgba(123, 44, 255, 0.2); filter: blur(120px); pointer-events: none; }
+.mwsb-prop-hero__glow-b { position: absolute; bottom: 40px; left: 5%; width: 320px; height: 320px; border-radius: 50%; background: rgba(174, 5, 198, 0.15); filter: blur(110px); pointer-events: none; }
+.mwsb-prop-hero__inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--mwsb-space-xl); }
+
+.mwsb-prop-hero__status-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.mwsb-prop-pill { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 6px 14px; border-radius: 999px; }
+.mwsb-prop-pill__text { min-width: 0; overflow-wrap: anywhere; }
+.mwsb-prop-pill--live { background: var(--mwsb-prop-surface-highlight); }
+.mwsb-prop-pill--muted { background: var(--mwsb-prop-surface-elevated); }
+.mwsb-prop-pill__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mwsb-prop-tertiary); animation: mwsb-prop-pulse 1.8s ease-in-out infinite; }
+.mwsb-prop-pill__text { font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.mwsb-prop-pill--live .mwsb-prop-pill__text { color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-pill--muted .mwsb-prop-pill__text { color: var(--mwsb-prop-text-muted); letter-spacing: 0.08em; }
+@keyframes mwsb-prop-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.mwsb-prop-hero__head { display: flex; flex-direction: column; gap: 8px; max-width: 900px; }
+
+.mwsb-prop-strip { background: rgba(16, 16, 42, 0.9); backdrop-filter: blur(20px); border-radius: 16px; padding: 20px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); }
+.mwsb-prop-strip__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.mwsb-prop-strip__item { display: flex; flex-direction: column; gap: 6px; }
+.mwsb-prop-strip__label { font-family: var(--mwsb-prop-font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mwsb-prop-text-muted); }
+.mwsb-prop-strip__value { display: flex; align-items: center; gap: 8px; font-family: var(--mwsb-prop-font-body); font-size: 18px; font-weight: 600; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-strip__value .mwsb-prop-icon { flex: none; font-size: 18px; }
+
+.mwsb-prop-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+
+.mwsb-prop-hero__scroll { display: flex; justify-content: center; padding-top: 8px; }
+.mwsb-prop-hero__scroll-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; max-width: 100%; padding: 10px 20px; border-radius: var(--mwsb-btn-radius); text-align: center; line-height: 1.4; background: var(--mwsb-prop-surface-container-low); color: var(--mwsb-prop-text-muted); font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; transition: all 0.3s ease; }
+.mwsb-prop-hero__scroll-link:hover { background: var(--mwsb-prop-surface-accent); color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-hero__scroll-link .mwsb-prop-icon { font-size: 16px; transition: transform 0.3s ease; }
+.mwsb-prop-hero__scroll-link:hover .mwsb-prop-icon { transform: translateY(2px); }
+
+@media (max-width: 1024px) { .mwsb-prop-strip__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 599px) { .mwsb-prop-strip__grid { grid-template-columns: 1fr; } .mwsb-prop-hero__status-row { flex-direction: column; align-items: flex-start; } }
+
+/* ---------------------------------------------------------------------
+ * Section head (shared by timeline / packages / investment)
+ * ------------------------------------------------------------------ */
+.mwsb-prop-head { display: flex; flex-direction: column; gap: 8px; max-width: 720px; margin-bottom: var(--mwsb-space-xl); }
+
+/* ---------------------------------------------------------------------
+ * Event timeline (4 stage cards)
+ * ------------------------------------------------------------------ */
+.mwsb-prop-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.mwsb-prop-stage { display: flex; flex-direction: column; background: var(--mwsb-prop-surface-elevated); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); transition: background 0.4s ease, box-shadow 0.4s ease; }
+.mwsb-prop-stage:hover { background: var(--mwsb-prop-surface-highlight); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4); }
+.mwsb-prop-stage__media { position: relative; height: 190px; overflow: hidden; background: var(--mwsb-prop-surface-container-lowest); }
+.mwsb-widget .mwsb-prop-stage__img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transition: transform 0.7s ease; }
+.mwsb-prop-stage:hover .mwsb-prop-stage__img { transform: scale(1.06); }
+.mwsb-prop-stage__scrim { position: absolute; inset: 0; background: linear-gradient(to top, var(--mwsb-prop-surface-elevated), transparent 55%); }
+.mwsb-prop-stage__num { position: absolute; top: 10px; left: 10px; padding: 4px 12px; border-radius: 999px; background: rgba(9, 9, 27, 0.8); backdrop-filter: blur(6px); font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-stage__time { position: absolute; bottom: 8px; right: 10px; font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--mwsb-prop-primary-bright); }
+.mwsb-prop-stage__body { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; padding: 24px; flex: 1; }
+.mwsb-prop-stage__title { font-family: var(--mwsb-prop-font-display); font-size: 18px; font-weight: 600; text-transform: uppercase; color: var(--mwsb-prop-text-white); margin: 0 0 6px; }
+.mwsb-prop-stage__text { font-size: 13px; line-height: 1.6; color: var(--mwsb-prop-text-muted); margin: 0; }
+.mwsb-prop-stage__setup { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: 8px; background: rgba(26, 26, 44, 0.5); }
+.mwsb-prop-stage__setup-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mwsb-prop-text-muted); opacity: 0.85; }
+.mwsb-prop-stage__setup-value { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-stage__setup-value .mwsb-prop-icon { font-size: 16px; color: var(--mwsb-prop-primary-bright); flex: none; }
+
+@media (max-width: 1024px) { .mwsb-prop-stages { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 599px) { .mwsb-prop-stages { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------------
+ * Package / pricing cards
+ * ------------------------------------------------------------------ */
+.mwsb-prop-packages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.mwsb-prop-card { display: flex; flex-direction: column; justify-content: space-between; background: var(--mwsb-prop-surface-elevated); border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); transition: background 0.3s ease; }
+.mwsb-prop-card:hover { background: var(--mwsb-prop-surface-highlight); }
+.mwsb-prop-card__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.mwsb-prop-card__badge { font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.mwsb-prop-card--purple .mwsb-prop-card__badge { color: var(--mwsb-prop-primary-bright); }
+.mwsb-prop-card--magenta .mwsb-prop-card__badge { color: var(--mwsb-prop-secondary); }
+.mwsb-prop-card--cyan .mwsb-prop-card__badge { color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-card__capacity { flex: none; padding: 4px 12px; border-radius: 999px; background: var(--mwsb-prop-surface-container-high); font-size: 11px; font-weight: 500; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-card__title { font-family: var(--mwsb-prop-font-display); font-size: 26px; font-weight: 600; text-transform: uppercase; color: var(--mwsb-prop-text-white); margin: 14px 0 0; }
+.mwsb-prop-card__price-row { display: flex; align-items: baseline; gap: 8px; margin-top: 4px; }
+.mwsb-prop-card__price { font-family: var(--mwsb-prop-font-display); font-size: 32px; font-weight: 600; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-card__price-note { font-size: 11px; color: var(--mwsb-prop-text-muted); }
+.mwsb-prop-card__text { font-size: 13px; line-height: 1.6; color: var(--mwsb-prop-text-muted); margin: 14px 0 0; }
+.mwsb-prop-card__hr { height: 1px; width: 100%; background: var(--mwsb-prop-surface-container-high); margin: 14px 0; }
+.mwsb-prop-card__list-label { display: block; font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mwsb-prop-text-white); margin-bottom: 10px; }
+.mwsb-prop-card__list { display: flex; flex-direction: column; gap: 10px; }
+.mwsb-prop-card__list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; color: var(--mwsb-prop-text-muted); }
+.mwsb-prop-card__list .mwsb-prop-icon { flex: none; font-size: 17px; margin-top: 1px; }
+.mwsb-prop-card--purple .mwsb-prop-card__list--ensemble .mwsb-prop-icon { color: var(--mwsb-prop-primary-bright); }
+.mwsb-prop-card--magenta .mwsb-prop-card__list--ensemble .mwsb-prop-icon { color: var(--mwsb-prop-secondary); }
+.mwsb-prop-card--cyan .mwsb-prop-card__list--ensemble .mwsb-prop-icon { color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-card__list--inclusions .mwsb-prop-icon { color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-card__actions { display: flex; flex-direction: column; gap: 10px; padding-top: 24px; }
+.mwsb-prop-card__btn-outline { display: flex; align-items: center; justify-content: center; width: 100%; min-height: var(--mwsb-btn-height); padding: 10px var(--mwsb-space-md); border-radius: var(--mwsb-btn-radius); border: none; background: var(--mwsb-prop-surface-container-high); color: var(--mwsb-prop-text-white); font-family: var(--mwsb-prop-font-display); font-size: var(--mwsb-btn-font-size); font-weight: 600; line-height: 1.25; letter-spacing: var(--mwsb-btn-letter-spacing); text-transform: uppercase; cursor: pointer; transition: background 0.3s ease; text-align: center; }
+.mwsb-prop-card__btn-outline:hover { background: var(--mwsb-prop-surface-accent); color: var(--mwsb-prop-text-white); }
+
+@media (max-width: 1024px) { .mwsb-prop-packages { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------------
+ * Investment & payment schedule
+ * ------------------------------------------------------------------ */
+.mwsb-prop-invest__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; align-items: start; }
+.mwsb-prop-invest__card { background: var(--mwsb-prop-surface-elevated); border-radius: 12px; padding: 32px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); display: flex; flex-direction: column; gap: 24px; }
+.mwsb-prop-invest__card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.mwsb-prop-invest__card-head > span:first-child { font-family: var(--mwsb-prop-font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-invest__tag { padding: 4px 14px; border-radius: 999px; background: rgba(123, 44, 255, 0.2); color: var(--mwsb-prop-primary-bright); font-size: 11px; font-weight: 500; text-transform: uppercase; }
+.mwsb-prop-invest__phases { font-size: 11px; color: var(--mwsb-prop-text-muted); }
+
+.mwsb-prop-invest__rows { display: flex; flex-direction: column; }
+.mwsb-prop-invest__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--mwsb-prop-border-hairline); }
+.mwsb-prop-invest__row:last-of-type { border-bottom: none; }
+.mwsb-prop-invest__row span { font-size: 15px; color: var(--mwsb-prop-text-muted); }
+.mwsb-prop-invest__row strong { font-size: 18px; font-weight: 600; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-invest__row .mwsb-prop-invest__included { font-family: var(--mwsb-prop-font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mwsb-prop-tertiary); }
+
+.mwsb-prop-invest__total { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 12px; margin-top: 4px; background: var(--mwsb-prop-surface-container-low); border-radius: 10px; padding: 16px; }
+.mwsb-prop-invest__total-label { display: flex; flex-direction: column; gap: 2px; }
+.mwsb-prop-invest__total-label span { font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mwsb-prop-secondary); }
+.mwsb-prop-invest__total-label small { font-size: 11px; color: var(--mwsb-prop-text-muted); }
+.mwsb-prop-invest__total strong { font-family: var(--mwsb-prop-font-display); font-size: 28px; font-weight: 600; color: var(--mwsb-prop-text-white); }
+
+.mwsb-prop-invest__note { display: flex; gap: 12px; padding: 14px; border-radius: 10px; background: var(--mwsb-prop-surface-container-lowest); }
+.mwsb-prop-invest__note .mwsb-prop-icon { flex: none; font-size: 20px; color: var(--mwsb-prop-primary-bright); margin-top: 2px; }
+.mwsb-prop-invest__note p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--mwsb-prop-text-muted); }
+
+.mwsb-prop-milestones { display: flex; flex-direction: column; }
+.mwsb-prop-milestone { display: flex; gap: 20px; }
+.mwsb-prop-milestone__col { display: flex; flex-direction: column; align-items: center; flex: none; }
+.mwsb-prop-milestone__num { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--mwsb-prop-surface-container-high); color: var(--mwsb-prop-text-white); font-family: var(--mwsb-prop-font-display); font-size: 13px; font-weight: 600; }
+.mwsb-prop-milestone--active .mwsb-prop-milestone__num { background: var(--mwsb-prop-primary); box-shadow: 0 0 16px rgba(123, 44, 255, 0.6); }
+.mwsb-prop-milestone__line { width: 2px; flex: 1; min-height: 40px; background: var(--mwsb-prop-surface-container-high); margin-top: 6px; }
+.mwsb-prop-milestone__body { flex: 1; display: flex; flex-direction: column; gap: 4px; padding-bottom: 28px; }
+.mwsb-prop-milestone__top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.mwsb-prop-milestone__top span { font-family: var(--mwsb-prop-font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-milestone__amt { font-family: var(--mwsb-prop-font-display); font-size: 14px; font-weight: 600; }
+.mwsb-prop-milestone__due { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--mwsb-prop-tertiary); }
+.mwsb-prop-milestone__body p { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--mwsb-prop-text-muted); }
+
+@media (max-width: 1024px) { .mwsb-prop-invest__grid { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------------
+ * Closing CTA
+ * ------------------------------------------------------------------ */
+.mwsb-prop-cta { position: relative; overflow: hidden; text-align: center; background: var(--mwsb-prop-surface-highlight); }
+.mwsb-prop-cta__bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.15; filter: grayscale(1); }
+.mwsb-prop-cta__glow { position: absolute; bottom: -100px; left: -100px; width: 380px; height: 380px; border-radius: 50%; background: rgba(123, 44, 255, 0.2); filter: blur(120px); pointer-events: none; }
+.mwsb-prop-cta__inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: var(--mwsb-space-lg); }
+.mwsb-prop-cta__badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; background: var(--mwsb-prop-surface-elevated); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3); }
+.mwsb-prop-cta__badge .mwsb-prop-icon { font-size: 16px; color: var(--mwsb-prop-stage-gold); }
+.mwsb-prop-cta__badge span:last-child { font-family: var(--mwsb-prop-font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mwsb-prop-stage-gold); }
+.mwsb-prop-cta__head { display: flex; flex-direction: column; gap: 8px; max-width: 760px; }
+.mwsb-prop-cta__desc { font-size: 18px; line-height: 1.56; color: var(--mwsb-prop-text-muted); margin: 8px auto 0; max-width: 560px; }
+.mwsb-prop-cta__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px; margin-top: 8px; }
+.mwsb-prop-cta__signoff { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 16px; }
+.mwsb-prop-cta__signoff-row { display: flex; align-items: center; gap: 16px; }
+.mwsb-prop-cta__signoff-avatar { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: var(--mwsb-prop-surface-container-high); }
+.mwsb-prop-cta__signoff-avatar .mwsb-prop-icon { font-size: 22px; color: var(--mwsb-prop-primary-bright); }
+.mwsb-prop-cta__signoff-text { display: flex; flex-direction: column; text-align: right; }
+.mwsb-prop-cta__signoff-name { font-size: 16px; font-weight: 600; color: var(--mwsb-prop-text-white); }
+.mwsb-prop-cta__signoff-role { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mwsb-prop-text-muted); }
+.mwsb-prop-cta__signoff-note { font-size: 13px; color: var(--mwsb-prop-text-muted); max-width: 440px; margin: 4px 0 0; }
+
+@media (max-width: 599px) {
+	.mwsb-prop-cta__actions { flex-direction: column; width: 100%; }
+	.mwsb-prop-cta__actions .mwsb-prop-btn { width: 100%; }
+}
+
+/* ---------------------------------------------------------------------
+ * Small-screen & touch baseline (QA)
+ * ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+	/* Hero buttons stack full-width like the CTA's, so two long labels can never overflow a 320px screen. */
+	.mwsb-prop-hero__actions { flex-direction: column; align-items: stretch; width: 100%; }
+	.mwsb-prop-hero__actions .mwsb-prop-btn { width: 100%; }
+	/* Card interiors: 32px + 32px of padding left ~215px of text on a 320px phone. */
+	.mwsb-prop-invest__card { padding: var(--mwsb-space-lg); }
+	.mwsb-prop-desc, .mwsb-prop-cta__desc { font-size: 16px; }
+	.mwsb-prop-invest__total strong { font-size: 24px; }
+	.mwsb-prop-stage__media { height: 170px; }
+}
+
+/* No sticky hover (lifted/zoomed cards) on touch screens — see widgets.css for the site-wide rule. */
+@media (hover: none) {
+	.mwsb-prop-stage:hover .mwsb-prop-stage__img { transform: none; }
+}

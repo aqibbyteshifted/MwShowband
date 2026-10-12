@@ -1,0 +1,17 @@
+/*
+Theme Name: MW Showband
+Theme URI: https://mw-showband.com
+Author: Aqib Dev
+Author URI: https://mw-showband.com
+Description: Lightweight Elementor-ready base theme for the MW Showband cinematic neo-futurism design system. Ships with a bundled set of custom Elementor widgets that replicate the approved homepage design pixel-for-pixel, fully editable in Elementor Pro.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+Text Domain: mw-showband
+*/
+
+body {
+	margin: 0;
+	background: #09091B;
+	color: #F7F7FF;
+}

@@ -1,0 +1,103 @@
+/*
+ * MW Showband — Thank You page (widget: inc/widgets/class-thank-you-widget.php).
+ * Uses the site's shared tokens (tokens.css), .mwsb-btn buttons and heading classes so it matches
+ * every other page; only the layout and the confirmation animation live here.
+ * Author: Aqib Dev
+ */
+
+.mwsb-ty {
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	/* Full screen on its own (Elementor Canvas has no header/footer); svh = visible height on phones. */
+	min-height: 100vh;
+	min-height: 100svh;
+	background: var(--mwsb-surface-base);
+}
+
+.mwsb-ty__bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.3; filter: grayscale(1); }
+
+.mwsb-ty__glow { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; }
+.mwsb-ty__glow--a { top: -140px; left: 50%; width: 520px; height: 520px; margin-left: -260px; background: rgba(135, 31, 130, 0.28); }
+.mwsb-ty__glow--b { bottom: -120px; right: 4%; width: 420px; height: 420px; background: rgba(231, 31, 133, 0.16); }
+
+.mwsb-ty__inner {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--mwsb-space-lg);
+	width: 100%;
+	max-width: 960px;
+	text-align: center;
+}
+
+/* ---- Confirmation mark: ring + tick draw themselves in ---- */
+.mwsb-ty__check {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 96px;
+	height: 96px;
+	border-radius: 50%;
+	color: var(--mwsb-tertiary);
+	background: var(--mwsb-surface-highlight);
+	box-shadow: 0 0 44px rgba(240, 130, 26, 0.28), inset 0 0 0 1px var(--mwsb-border-hairline);
+	animation: mwsb-ty-pop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.mwsb-ty__check svg { width: 58%; height: 58%; overflow: visible; }
+.mwsb-ty__check-ring { stroke-dasharray: 151; stroke-dashoffset: 151; animation: mwsb-ty-draw 0.9s 0.1s ease forwards; }
+.mwsb-ty__check-tick { stroke-dasharray: 40; stroke-dashoffset: 40; animation: mwsb-ty-draw 0.5s 0.8s ease forwards; }
+@keyframes mwsb-ty-draw { to { stroke-dashoffset: 0; } }
+@keyframes mwsb-ty-pop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* ---- Text blocks fade up one after another ---- */
+.mwsb-ty__inner > *:not(.mwsb-ty__check) { animation: mwsb-ty-rise 0.7s ease both; }
+.mwsb-ty__inner > *:nth-child(2) { animation-delay: 0.25s; }
+.mwsb-ty__inner > *:nth-child(3) { animation-delay: 0.35s; }
+.mwsb-ty__inner > *:nth-child(4) { animation-delay: 0.45s; }
+.mwsb-ty__inner > *:nth-child(5) { animation-delay: 0.55s; }
+.mwsb-ty__inner > *:nth-child(6) { animation-delay: 0.65s; }
+.mwsb-ty__inner > *:nth-child(n+7) { animation-delay: 0.75s; }
+@keyframes mwsb-ty-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.mwsb-ty__eyebrow { margin: 0; color: var(--mwsb-tertiary); letter-spacing: 0.3em; }
+.mwsb-ty__title { margin: 0; }
+.mwsb-ty__desc { max-width: 640px; margin: 0; font-size: 18px; line-height: 1.7; color: var(--mwsb-text-muted); }
+
+/* ---- What happens next ---- */
+.mwsb-ty__steps-label { margin-top: var(--mwsb-space-md); font-family: var(--mwsb-font-heading); font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mwsb-text-muted); }
+.mwsb-ty__steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--mwsb-space-lg); width: 100%; text-align: left; }
+.mwsb-ty-step { display: flex; flex-direction: column; gap: var(--mwsb-space-sm); padding: var(--mwsb-space-lg); border: 1px solid var(--mwsb-border-hairline); border-radius: var(--mwsb-radius-lg); background: var(--mwsb-surface-elevated); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); transition: background 0.3s ease; }
+.mwsb-ty-step:hover { background: var(--mwsb-surface-highlight); }
+.mwsb-ty-step__top { display: flex; align-items: center; justify-content: space-between; gap: var(--mwsb-space-sm); }
+.mwsb-ty-step__num { font-family: var(--mwsb-font-display); font-size: 28px; font-weight: 800; line-height: 1; color: var(--mwsb-tertiary); }
+.mwsb-ty-step__icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--mwsb-radius-md); background: var(--mwsb-surface-base); color: var(--mwsb-accent-purple); font-size: 18px; }
+/* Elementor puts the class passed to render_icon() on the <svg> itself, so fill must be set here. */
+.mwsb-ty-icon { display: inline-block; flex: none; width: 1em; height: 1em; fill: currentColor; }
+.mwsb-ty-step__title { margin: var(--mwsb-space-xs) 0 0; font-family: var(--mwsb-font-display); font-size: 16px; font-weight: 700; text-transform: uppercase; color: var(--mwsb-text-white); }
+.mwsb-ty-step__text { margin: 0; font-size: 13px; line-height: 1.6; color: var(--mwsb-text-muted); }
+
+/* ---- Actions + contact + note ---- */
+.mwsb-ty__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--mwsb-space-md); margin-top: var(--mwsb-space-sm); }
+.mwsb-ty__contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--mwsb-space-sm) var(--mwsb-space-xl); }
+.mwsb-ty__contact a { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mwsb-font-body); font-size: 14px; font-weight: 600; color: var(--mwsb-text-white); text-decoration: none; transition: color 0.2s ease; }
+.mwsb-ty__contact a:hover { color: var(--mwsb-tertiary); }
+.mwsb-ty__contact .mwsb-ty-icon { color: var(--mwsb-tertiary); }
+.mwsb-ty__note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--mwsb-text-muted); }
+
+@media (max-width: 767px) {
+	.mwsb-ty__steps { grid-template-columns: 1fr; }
+	.mwsb-ty__desc { font-size: 16px; }
+	.mwsb-ty__check { width: 80px; height: 80px; }
+	.mwsb-ty__actions { flex-direction: column; align-items: stretch; width: 100%; }
+	.mwsb-ty__actions .mwsb-btn { width: 100%; }
+}
+
+/* Reduced motion: show the finished state at once (the global rule only shortens durations; the
+   staggered delays would still make the page look empty for a second). */
+@media (prefers-reduced-motion: reduce) {
+	.mwsb-ty *, .mwsb-ty *::before, .mwsb-ty *::after { animation-delay: 0s !important; }
+}
